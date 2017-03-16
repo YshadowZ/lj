@@ -1,0 +1,54 @@
+//blue
+$blue-1: #ecf6fd;
+$blue-2: #d2eafb;
+$blue-3: #add8f7;
+$blue-4: #7ec2f3;
+$blue-5: #49a9ee;
+$blue-6: #108ee9;
+$blue-7: #0e77ca;
+$blue-8: #0c60aa;
+$blue-9: #09488a;
+$blue-10: #073069;
+
+.header-logo{
+  display: inline-block;
+  font-size: 22px;
+  color: #fff;
+}
+
+.chapter-list-item{
+  display: block;
+  font-size: 14px;
+  &:hover{
+    background-color: $blue-1;
+  }
+  &.active{
+    background-color: $blue-3;
+  }
+}
+
+.topic-list, .topic-list-practice, .topic-list-interactions, .show-list{
+  background: $blue-1;
+  padding: 10px;
+  .tab-bar{
+    float: left;
+    width: 150px;
+  }
+  .tab-content{
+    float: left;
+    margin-left: 50px;
+    width: 80%;
+    background-color: #fff;
+  }
+}
+
+.ant-upload-select-picture-card i {
+  font-size: 28px;
+  color: #999;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}
