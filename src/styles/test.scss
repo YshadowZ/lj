@@ -16,6 +16,7 @@ body {
   display: flex;
   align-items: center;
   z-index: 2;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
   .search-icon {
     position: absolute;
     left: 254px;
@@ -27,6 +28,9 @@ body {
     position: absolute;
     left: 282px;
     border: none;
+  }
+  .search-input:focus {
+    outline: none;
   }
   .half-left {
     border-top-left-radius: 4px;
@@ -118,9 +122,24 @@ body {
     width: 320px;
     height: 100%;
   }
-  .slide-color-board {
+  .slide-color-board, .slide-image-board {
     height: 320px;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 115px;
+      height: 115px;
+      display: flex;
+    }
+  }
+  .slide-image-download {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: solid 1px #eaeaea;
   }
   .slide-color-name {
     color: #3b3b3b;

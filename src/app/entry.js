@@ -1,6 +1,6 @@
 import React from 'react';
 import R from 'ramda';
-import { Input, Icon, Row, Col, Tag, Button, Modal } from 'antd';
+import { Input, Icon, Row, Col, Tag, Button, Modal, Upload, notification } from 'antd';
 import logoSvg from '../../assets/logo.svg';
 import iconSearch from '../../assets/icon-search.svg';
 import iconUpload from '../../assets/icon-upload.svg';
@@ -22,10 +22,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.resources = [
-      { type: 'color', name: 'onion-blue', value: '#FFDE59' },
-      { type: 'color', name: 'onion-yellow', value: '#BD72CC' },
-      { type: 'img', name: 'zhifubao', value: aliImg },
-      { type: 'img', name: 'weichat', value: weixinImg }
+      { type: 'color', name: 'onion-blue', value: '#FFDE59', tags: ['first', 'second'] },
+      { type: 'color', name: 'onion-yellow', value: '#BD72CC', tags: ['first', 'second'] },
+      { type: 'img', name: 'zhifubao', value: aliImg, tags: ['first', 'second'] },
+      { type: 'img', name: 'weichat', value: weixinImg, tags: ['first', 'second'] }
     ];
     this.state = {
       currentItem: {},
@@ -33,7 +33,9 @@ class App extends React.Component {
       createColorVisiable: false,
       color: '',
       backgroundColor: '',
-      colorWrong: false
+      colorWrong: false,
+      tagInputVisible: false,
+      tagInputValue: ''
     };
   }
 
@@ -87,12 +89,35 @@ class App extends React.Component {
   }
 
   addColor = () => {
-    this.resources.push({ type: 'color', value: '#' + this.state.color, name: 'yello' });
+    this.resources.push({ type: 'color', value: '#' + this.state.color, name: 'yello', tags: ['first', 'second'] });
     this.setState({ createColorVisiable: false, color: '', backgroundColor: '' });
   }
 
   cancelAddColor = () => {
     this.setState({ createColorVisiable: false });
+  }
+
+  handleTagInputChange = (e) => {
+    this.setState({ tagInputValue: e.target.value });
+  }
+
+  handleTagInputConfirm = () => {
+    const currentItem = R.find(item => item.name === this.state.currentItem.name, this.resources);
+    currentItem.tags.push(this.state.tagInputValue);
+    this.setState({ currentItem, tagInputVisible: false, tagInputValue: '' });
+  }
+
+  uploadFile = () => {
+    // console.log(info)
+    // notification.open({
+    //   duration: 1,
+    //   message: '正在上传过程中',
+    //   description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+    // });
+  }
+
+  showInput = () => {
+    this.setState({ tagInputVisible: true });
   }
 
   render() {
@@ -102,7 +127,9 @@ class App extends React.Component {
           <img src={logoSvg} alt="" className="logo" />
           <img src={iconSearch} alt="" className="search-icon" />
           <input type="text" className="search-input" placeholder="请输入搜索内容" />
-          <button className="half-left"><img src={iconUpload} alt="" className="icon" />上传文件</button>
+          <button className="half-left"><img src={iconUpload} alt="" className="icon" />
+            <Upload onChange={this.uploadFile} style={{ fontSize: '14px' }}>上传文件</Upload>
+          </button>
           <button className="half-right" onClick={this.createColor}><img src={iconCreateColor} alt="" className="icon" />创建颜色</button>
         </header>
         <div className="lj-container">
@@ -171,9 +198,22 @@ class App extends React.Component {
                     <div className="slide-block">
                       <p className="slide-title">标签</p>
                       <div style={{ 'margin-top': '10px' }}>
-                        <Tag closable>Tag 2</Tag>
-                        <Tag closable>Tag 2</Tag>
-                        <Button size="small" type="dashed" onClick={this.showInput}>+ New Tag</Button>
+                        {
+                          this.state.currentItem.tags.map((tag, index) => <Tag style={{ marginRight: '5px', marginBottom: '5px' }} key={tag + index} closable>{tag}</Tag>)
+                        }
+                        {
+                          this.state.tagInputVisible ? (
+                            <Input
+                              type="text" size="small"
+                              style={{ width: 78 }}
+                              value={this.state.tagInputValue}
+                              onChange={this.handleTagInputChange}
+                              onBlur={this.handleTagInputConfirm}
+                            />
+                          ) : (
+                            <Button size="small" type="dashed" onClick={this.showInput}>+ New Tag</Button>
+                          )
+                        }
                       </div>
                     </div>
                     <div className="slide-block">
@@ -183,11 +223,11 @@ class App extends React.Component {
                     <div className="slide-block">
                       <p className="slide-title">详细内容</p>
                       <p style={{ 'font-size': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
-                        <span style={{ display: 'inline-block', width: '60px', color: '#a2a2a2' }}>文件类型:</span>
+                        <span style={{ display: 'inline-block', width: '62px', color: '#a2a2a2' }}>文件类型:</span>
                         <span style={{ display: 'inline-block', color: '#3b3b3b3', 'text-align': 'left', 'margin-left': '20px' }}>{this.state.currentItem.type}</span>
                       </p>
                       <p style={{ 'font-size': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
-                        <span style={{ display: 'inline-block', width: '60px', color: '#a2a2a2' }}>创建时间:</span>
+                        <span style={{ display: 'inline-block', width: '62px', color: '#a2a2a2' }}>创建时间:</span>
                         <span style={{ display: 'inline-block', color: '#3b3b3b3', 'text-align': 'left', 'margin-left': '20px' }}>{new Date().getUTCDate()}</span>
                       </p>
                     </div>
@@ -195,7 +235,55 @@ class App extends React.Component {
                 );
               }
               if (this.state.currentItem.type === 'img') {
-                return null;
+                return (
+                  <div>
+                    <div className="slide-image-board">
+                      <img src={this.state.currentItem.value} alt="" />
+                    </div>
+                    <p className="slide-color-name">{this.state.currentItem.name}</p>
+                    <div className="slide-image-download">
+                      <Button style={{ margin: '0px 5px', fontSize: '14px', padding: '5px 18px' }} type="primary" icon="download" size={'small'}>SVG</Button>
+                      <Button style={{ margin: '0px 5px', fontSize: '14px', padding: '5px 18px' }} type="primary" icon="download" size={'small'}>PNG</Button>
+                      <Button style={{ margin: '0px 5px', fontSize: '14px', padding: '5px 18px' }} type="primary" icon="download" size={'small'}>JPG</Button>
+                    </div>
+                    <div className="slide-block">
+                      <p className="slide-title">标签</p>
+                      <div style={{ 'margin-top': '10px' }}>
+                        {
+                          this.state.currentItem.tags.map((tag, index) => <Tag style={{ marginRight: '5px', marginBottom: '5px' }} key={tag + index} closable>{tag}</Tag>)
+                        }
+                        {
+                          this.state.tagInputVisible ? (
+                            <Input
+                              type="text" size="small"
+                              style={{ width: 78 }}
+                              value={this.state.tagInputValue}
+                              onChange={this.handleTagInputChange}
+                              onBlur={this.handleTagInputConfirm}
+                            />
+                          ) : (
+                            <Button size="small" type="dashed" onClick={this.showInput}>+ New Tag</Button>
+                          )
+                        }
+                      </div>
+                    </div>
+                    <div className="slide-block">
+                      <p className="slide-title">描述</p>
+                      <p className="content">这里是视觉库的描述，容受江万理部验约，我立道响完教小</p>
+                    </div>
+                    <div className="slide-block">
+                      <p className="slide-title">详细内容</p>
+                      <p style={{ 'font-size': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
+                        <span style={{ display: 'inline-block', width: '62px', color: '#a2a2a2' }}>文件类型:</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'text-align': 'left', 'margin-left': '20px' }}>{this.state.currentItem.type}</span>
+                      </p>
+                      <p style={{ 'font-size': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
+                        <span style={{ display: 'inline-block', width: '62px', color: '#a2a2a2' }}>创建时间:</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'text-align': 'left', 'margin-left': '20px' }}>{new Date().getUTCDate()}</span>
+                      </p>
+                    </div>
+                  </div>
+                );
               }
               return (
                 <div>
@@ -228,7 +316,7 @@ class App extends React.Component {
           <p>当前仅支持16进制值</p>
           <Input
             placeholder="输入色值"
-            prefix={<Icon type="user" />}
+            prefix={<span>#</span>}
             value={this.state.color}
             onChange={this.onChangeColor}
             style={{ width: '80px' }}
