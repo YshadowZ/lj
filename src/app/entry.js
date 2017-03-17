@@ -12,12 +12,12 @@ import '../styles/test.scss';
 
 
 class App extends React.Component {
-  static propTypes = {
-    children: React.PropTypes.oneOfType([ // null or []
-      React.PropTypes.arrayOf(React.PropTypes.node),
-      React.PropTypes.node
-    ])
-  }
+  // static propTypes = {
+  //   children: React.PropTypes.oneOfType([ // null or []
+  //     React.PropTypes.arrayOf(React.PropTypes.node),
+  //     React.PropTypes.node
+  //   ])
+  // }
 
   constructor(props) {
     super(props);
@@ -37,43 +37,24 @@ class App extends React.Component {
       tagInputVisible: false,
       tagInputValue: ''
     };
+    this.handleIndexClick = this.handleIndexClick.bind(this);
+    this.onChangeColor = this.onChangeColor.bind(this);
+    this.handleHoverItem = this.handleHoverItem.bind(this);
+    this.cancelHoverItem = this.cancelHoverItem.bind(this);
+    this.beforeDelete = this.beforeDelete.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleCancelDelete = this.handleCancelDelete.bind(this);
+    this.createColor = this.createColor.bind(this);
+    this.handleShowClick = this.handleShowClick.bind(this);
+    this.addColor = this.addColor.bind(this);
+    this.cancelAddColor = this.cancelAddColor.bind(this);
+    this.handleTagInputChange = this.handleTagInputChange.bind(this);
+    this.handleTagInputConfirm = this.handleTagInputConfirm.bind(this);
+    this.uploadFile = this.uploadFile.bind(this);
+    this.showInput = this.showInput.bind(this);
   }
 
-  handleIndexClick = () => {
-    hashHistory.push('/');
-  }
-
-  handleShowClick = () => {
-    hashHistory.push('/show');
-  }
-
-  handleHoverItem = (resource) => {
-    this.setState({ currentItem: resource });
-  }
-
-  cancelHoverItem = () => {
-    // this.setState({ currentItem: {} });
-  }
-
-  beforeDelete = () => {
-    this.setState({ deleteVisiable: true });
-  }
-
-  handleDelete = () => {
-    this.resources = R.filter(item => item.name !== this.state.currentItem.name, this.resources);
-    this.setState({ currentItem: {}, deleteVisiable: false });
-  }
-
-  handleCancelDelete = () => {
-    this.setState({ deleteVisiable: false });
-  }
-
-  createColor = () => {
-    this.setState({ createColorVisiable: true })
-  }
-
-  onChangeColor = (e) => {
-    console.log(e.target.value)
+  onChangeColor(e) {
     // console.log(value)
     this.setState({ color: e.target.value });
     if ((e.target.value + '').length === 6) {
@@ -88,26 +69,59 @@ class App extends React.Component {
     }
   }
 
-  addColor = () => {
+  handleHoverItem(resource) {
+    this.setState({ currentItem: resource });
+  }
+
+  cancelHoverItem() {
+    // this.setState({ currentItem: {} });
+  }
+
+  beforeDelete() {
+    this.setState({ deleteVisiable: true });
+  }
+
+  handleDelete() {
+    this.resources = R.filter(item => item.name !== this.state.currentItem.name, this.resources);
+    this.setState({ currentItem: {}, deleteVisiable: false });
+  }
+
+  handleCancelDelete() {
+    this.setState({ deleteVisiable: false });
+  }
+
+  createColor() {
+    this.setState({ createColorVisiable: true })
+  }
+
+  handleShowClick() {
+    hashHistory.push('/show');
+  }
+
+  handleIndexClick() {
+    hashHistory.push('/');
+  }
+
+  addColor() {
     this.resources.push({ type: 'color', value: '#' + this.state.color, name: 'yello', tags: ['first', 'second'] });
     this.setState({ createColorVisiable: false, color: '', backgroundColor: '' });
   }
 
-  cancelAddColor = () => {
+  cancelAddColor() {
     this.setState({ createColorVisiable: false });
   }
 
-  handleTagInputChange = (e) => {
+  handleTagInputChange(e) {
     this.setState({ tagInputValue: e.target.value });
   }
 
-  handleTagInputConfirm = () => {
+  handleTagInputConfirm() {
     const currentItem = R.find(item => item.name === this.state.currentItem.name, this.resources);
     currentItem.tags.push(this.state.tagInputValue);
     this.setState({ currentItem, tagInputVisible: false, tagInputValue: '' });
   }
 
-  uploadFile = () => {
+  uploadFile() {
     // console.log(info)
     // notification.open({
     //   duration: 1,
@@ -116,7 +130,7 @@ class App extends React.Component {
     // });
   }
 
-  showInput = () => {
+  showInput() {
     this.setState({ tagInputVisible: true });
   }
 

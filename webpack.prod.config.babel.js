@@ -14,7 +14,7 @@ const config = {
     publicPath: buildConfig.prod.staticDomain
   },
   devServer: {
-    inline: isDev
+    inline: false
   },
   module: {
     loaders: [
