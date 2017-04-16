@@ -1,24 +1,14 @@
 import React from 'react';
 import R from 'ramda';
 import { Input, Icon, Row, Col, Tag, Button, Modal, Upload, notification } from 'antd';
-import logoSvg from '../../assets/logo.svg';
-import iconSearch from '../../assets/icon-search.svg';
-import iconUpload from '../../assets/icon-upload.svg';
+import Header from './header.js';
 import iconDelete from '../../assets/icon-delete.svg';
-import iconCreateColor from '../../assets/icon-create-color.svg';
 import aliImg from '../../assets/zhifubao.png';
 import weixinImg from '../../assets/weichat.png';
 import '../styles/test.scss';
 
 
 class App extends React.Component {
-  // static propTypes = {
-  //   children: React.PropTypes.oneOfType([ // null or []
-  //     React.PropTypes.arrayOf(React.PropTypes.node),
-  //     React.PropTypes.node
-  //   ])
-  // }
-
   constructor(props) {
     super(props);
     this.resources = [
@@ -137,15 +127,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <header className="lj-header">
-          <img src={logoSvg} alt="" className="logo" />
-          <img src={iconSearch} alt="" className="search-icon" />
-          <input type="text" className="search-input" placeholder="请输入搜索内容" />
-          <button className="half-left"><img src={iconUpload} alt="" className="icon" />
-            <Upload onChange={this.uploadFile} style={{ fontSize: '14px' }}>上传文件</Upload>
-          </button>
-          <button className="half-right" onClick={this.createColor}><img src={iconCreateColor} alt="" className="icon" />创建颜色</button>
-        </header>
+        <Header
+          uploadFile={this.uploadFile}
+          createColor={this.createColor}
+        ></Header>
         <div className="lj-container">
           <div className="content">
             {
@@ -197,21 +182,21 @@ class App extends React.Component {
                       </p>
                       <p className="slide-color-detail-item">
                         <span className="title">RGB:</span>
-                        <span style={{ display: 'inline-block', 'margin-left': '15px', color: '#3b3b3b3', width: '40px', 'border-right': 'solid 1px #6a6a6a' }}>114</span>
-                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'border-right': 'solid 1px #6a6a6a', 'text-align': 'center' }}>114</span>
-                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'text-align': 'center' }}>114</span>
+                        <span style={{ display: 'inline-block', 'marginLeft': '15px', color: '#3b3b3b3', width: '40px', 'borderRight': 'solid 1px #6a6a6a' }}>114</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'borderRight': 'solid 1px #6a6a6a', 'textAlign': 'center' }}>114</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'textAlign': 'center' }}>114</span>
                       </p>
                       <p className="slide-color-detail-item">
                         <span className="title">CMYK:</span>
-                        <span style={{ display: 'inline-block', 'margin-left': '15px', color: '#3b3b3b3', width: '40px', 'border-right': 'solid 1px #6a6a6a' }}>20%</span>
-                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'border-right': 'solid 1px #6a6a6a', 'text-align': 'center' }}>40%</span>
-                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'border-right': 'solid 1px #6a6a6a', 'text-align': 'center' }}>40%</span>
-                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'text-align': 'center' }}>40%</span>
+                        <span style={{ display: 'inline-block', 'marginLeft': '15px', color: '#3b3b3b3', width: '40px', 'borderRight': 'solid 1px #6a6a6a' }}>20%</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'borderRight': 'solid 1px #6a6a6a', 'textAlign': 'center' }}>40%</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'borderRight': 'solid 1px #6a6a6a', 'textAlign': 'center' }}>40%</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', width: '55px', 'textAlign': 'center' }}>40%</span>
                       </p>
                     </div>
                     <div className="slide-block">
                       <p className="slide-title">标签</p>
-                      <div style={{ 'margin-top': '10px' }}>
+                      <div style={{ 'marginTop': '10px' }}>
                         {
                           this.state.currentItem.tags.map((tag, index) => <Tag style={{ marginRight: '5px', marginBottom: '5px' }} key={tag + index} closable>{tag}</Tag>)
                         }
@@ -236,13 +221,13 @@ class App extends React.Component {
                     </div>
                     <div className="slide-block">
                       <p className="slide-title">详细内容</p>
-                      <p style={{ 'font-size': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
+                      <p style={{ 'fontSize': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
                         <span style={{ display: 'inline-block', width: '62px', color: '#a2a2a2' }}>文件类型:</span>
-                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'text-align': 'left', 'margin-left': '20px' }}>{this.state.currentItem.type}</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'textAlign': 'left', 'marginLeft': '20px' }}>{this.state.currentItem.type}</span>
                       </p>
-                      <p style={{ 'font-size': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
+                      <p style={{ 'fontSize': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
                         <span style={{ display: 'inline-block', width: '62px', color: '#a2a2a2' }}>创建时间:</span>
-                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'text-align': 'left', 'margin-left': '20px' }}>{new Date().getUTCDate()}</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'textAlign': 'left', 'marginLeft': '20px' }}>{new Date().getUTCDate()}</span>
                       </p>
                     </div>
                   </div>
@@ -262,7 +247,7 @@ class App extends React.Component {
                     </div>
                     <div className="slide-block">
                       <p className="slide-title">标签</p>
-                      <div style={{ 'margin-top': '10px' }}>
+                      <div style={{ 'marginTop': '10px' }}>
                         {
                           this.state.currentItem.tags.map((tag, index) => <Tag style={{ marginRight: '5px', marginBottom: '5px' }} key={tag + index} closable>{tag}</Tag>)
                         }
@@ -287,13 +272,13 @@ class App extends React.Component {
                     </div>
                     <div className="slide-block">
                       <p className="slide-title">详细内容</p>
-                      <p style={{ 'font-size': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
+                      <p style={{ 'fontSize': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
                         <span style={{ display: 'inline-block', width: '62px', color: '#a2a2a2' }}>文件类型:</span>
-                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'text-align': 'left', 'margin-left': '20px' }}>{this.state.currentItem.type}</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'textAlign': 'left', 'marginLeft': '20px' }}>{this.state.currentItem.type}</span>
                       </p>
-                      <p style={{ 'font-size': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
+                      <p style={{ 'fontSize': '14px', color: '#a2a2a2', margin: '10px 0px' }}>
                         <span style={{ display: 'inline-block', width: '62px', color: '#a2a2a2' }}>创建时间:</span>
-                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'text-align': 'left', 'margin-left': '20px' }}>{new Date().getUTCDate()}</span>
+                        <span style={{ display: 'inline-block', color: '#3b3b3b3', 'textAlign': 'left', 'marginLeft': '20px' }}>{new Date().getUTCDate()}</span>
                       </p>
                     </div>
                   </div>
